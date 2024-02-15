@@ -6,14 +6,15 @@ This project is help to deploy the the end to end three tier node app based on M
 - Basic knowledge of Docker, and AWS services.
 - An AWS account with necessary permissions.
 
-
+  
 ### Step 1: IAM Configuration
-- Create a user `eks-admin` with `AdministratorAccess`.
+- In IAM Create a user `eks-admin` with `AdministratorAccess` and 'Database' rights.
 - Generate Security Credentials: Access Key and Secret Access Key.
 
-### Step 2: EC2 Setup
-- Launch an Ubuntu instance in your favourite region (eg. region `us-west-2`).
+### Step 2: Create a server
+- Launch an Ubuntu instance in your favourite region (eg. region `us-west-2`). and used t2-micro type for free tier.
 - SSH into the instance from your local machine.
+- check the video https://www.youtube.com/watch?v=0Gz-PUnEUF0
 
 ### Step 3: Install AWS CLI v2
 ``` shell
@@ -21,18 +22,31 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip
 sudo apt install unzip
 unzip awscliv2.zip
 sudo ./aws/install -i /usr/local/aws-cli -b /usr/local/bin --update
-aws configure
+aws configure       #Enter here Access Key and Secret Access Key after run the command.
 ```
 
-### Step 4: Install Docker
+### Step 4: Install Docker and create docker image
 ``` shell
 sudo apt-get update
 sudo apt install docker.io
 docker ps
 sudo chown $USER /var/run/docker.sock
 ```
+- Go to the backend directory you can find a docker file and run
+``` shell
+docker build -t my-image-name <path_to_Dockerfile>
+docker tag my-image-name <repository_uri>:my-tag
+```
+- push the created image in aws ECR(elastic container registry) for that you need to create repo in AWS ECR first.
+``` shell
+aws ecr get-login-password --region <your-region> | docker login --username AWS --password-stdin <account-id>.dkr.ecr.<region>.amazonaws.com
+docker push <repository_uri>:my-tag
+docker run -p 8080:80 <repository_uri>:my-tag
+```
+- Do the same with frontend
 
 ### Step 5: Install kubectl
+Note :- AWS EKS is not in aws free tier.
 ``` shell
 curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/kubectl
 chmod +x ./kubectl
@@ -55,10 +69,11 @@ kubectl get nodes
 ```
 
 ### Step 8: Run Manifests
+- Go to the kubernetses manifest files directory.
+- Run the commands to create the nodes
 ``` shell
-kubectl create namespace workshop
-kubectl apply -f .
-kubectl delete -f .
+kubectl create namespace myapp
+kubectl apply -f . -n myapp
 ```
 
 ### Step 9: Install AWS Load Balancer
@@ -76,7 +91,7 @@ helm repo add eks https://aws.github.io/eks-charts
 helm repo update eks
 helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=my-cluster --set serviceAccount.create=false --set serviceAccount.name=aws-load-balancer-controller
 kubectl get deployment -n kube-system aws-load-balancer-controller
-kubectl apply -f full_stack_lb.yaml
+kubectl apply -f full_stack_lb.yaml         #apply file for ingress routiung
 ```
 
 ### Cleanup
@@ -85,17 +100,3 @@ kubectl apply -f full_stack_lb.yaml
 eksctl delete cluster --name three-tier-cluster --region us-west-2
 ```
 
-## Contribution Guidelines
-- Fork the repository and create your feature branch.
-- Deploy the application, adding your creative enhancements.
-- Ensure your code adheres to the project's style and contribution guidelines.
-- Submit a Pull Request with a detailed description of your changes.
-
-## Rewards
-- Successful PR merges will be eligible for exciting prizes!
-
-## Support
-For any queries or issues, please open an issue in the repository.
-
----
-Happy Learning! 🚀👨‍💻👩‍💻
