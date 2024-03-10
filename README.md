@@ -1,5 +1,5 @@
 ## Three tier app deployment on AWS EKS cluster
-This project is help to deploy the the end to end three tier node app based on MongoDB deployment to docker containerize the app and build on AWS EKS cluster. To give the cluster services to outside world user weused Ingress service which helps to connect outside the cluster. For balacing the load of the ELB(elastic load balancer) in our deployment.
+This project is help to deploy the the end to end three tier app based on node, MongoDB. Deployment to docker containerize the app and build on AWS EKS cluster. To give the cluster services to outside world user weused Ingress service which helps to connect outside the cluster. For balacing the load of the ELB(elastic load balancer) in our deployment.
 
 
 ## Prerequisites
