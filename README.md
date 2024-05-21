@@ -7,7 +7,7 @@ This project is help to deploy the the end to end three tier app based on node, 
 - An AWS account with necessary permissions.
 
   
-### Step 1: IAM Configuration
+### Step 1: IAM Configuration in AWS/ Microsoft extra ID in azure
 - In IAM Create a user `eks-admin` with `AdministratorAccess` and 'Database' rights.
 - Generate Security Credentials: Access Key and Secret Access Key.
 
@@ -15,6 +15,10 @@ This project is help to deploy the the end to end three tier app based on node, 
 - Launch an Ubuntu instance in your favourite region (eg. region `us-west-2`). and used t2-micro type for free tier.
 - SSH into the instance from your local machine.
 - check the video https://www.youtube.com/watch?v=0Gz-PUnEUF0
+- switch the user that we create
+```shell
+sudo su <user_name>
+```
 
 ### Step 3: Install AWS CLI v2
 ``` shell
@@ -34,7 +38,7 @@ sudo chown $USER /var/run/docker.sock
 ```
 - Go to the backend directory you can find a docker file and run
 ``` shell
-docker build -t my-image-name <path_to_Dockerfile>
+docker build -t <repo_url>:my-tag <path_to_Dockerfile>
 docker tag my-image-name <repository_uri>:my-tag
 ```
 - push the created image in aws ECR(elastic container registry) for that you need to create repo in AWS ECR first.
@@ -59,6 +63,13 @@ kubectl version --short --client
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
 eksctl version
+```
+
+## Create nasmespame
+kubectl create Namespace to isolate the resources and after that switch to the myapp namespace after that all resource create in this namespace
+```shell
+kubectl create ns myapp                                         
+kubectl config set-context --current --namespace myapp
 ```
 
 ### Step 7: Setup EKS Cluster
