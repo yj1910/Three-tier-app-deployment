@@ -1,5 +1,5 @@
 ## Three tier app deployment on AWS EKS cluster
-This project is help to deploy the the end to end three tier app based on node, MongoDB. Deployment to docker containerize the app and build on AWS EKS cluster. To give the cluster services to outside world user weused Ingress service which helps to connect outside the cluster. For balacing the load of the ELB(elastic load balancer) in our deployment.
+This project is help to deploy the end to end three tier application based on node and MongoDB database. Deployemnt has been done on AWS EKS cluster step by step for container runtime environment we have used docker. 
 
 
 ## Prerequisites
@@ -7,7 +7,7 @@ This project is help to deploy the the end to end three tier app based on node, 
 - An AWS account with necessary permissions.
 
   
-### Step 1: IAM Configuration in AWS/ Microsoft extra ID in azure
+### Step 1: IAM Configuration in AWS.
 - In IAM Create a user `eks-admin` with `AdministratorAccess` and 'Database' rights.
 - Generate Security Credentials: Access Key and Secret Access Key.
 
