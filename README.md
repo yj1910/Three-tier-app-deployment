@@ -1,6 +1,5 @@
 ## Three tier app deployment on AWS EKS cluster
-This project is help to deploy the end to end three tier application based on node and MongoDB database. Deployemnt has been done on AWS EKS cluster step by step for container runtime environment we have used docker. 
-
+This project is help to deploy the end to end three tier application based on node and MongoDB database. Deployemnt has been done on AWS EKS cluster step by step for container runtime environment we have used docker. For rounting rule we have used nginx ingress controller and use aws loadbalancer.
 
 ## Prerequisites
 - Basic knowledge of Docker, and AWS services.
